@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Identification Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #367383;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        #emotionDisplay {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        
+        .button {
+            margin: 10px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #dde6f0;
+            color: rgb(133, 40, 40);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        
+        .button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        .celebration {
+            display: none;
+            font-size: 24px;
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        #emotionOptions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Identify the Emotion</h1>
+    <p>Choose the correct emotion for the displayed face.</p>
+    <div id="emotionDisplay">😀</div>
+    <div id="emotionOptions"></div>
+    <div class="celebration" id="emotionSuccess">✅ Correct! Great job!</div>
+    <button class="button" onclick="startGame()">New Emotion</button>
+
+    <script>
+        const emotions = { "Happy": "😀", "Sad": "😢", "Angry": "😡", "Surprised": "😲", "Neutral": "😐" };
+
+        function startGame() {
+            let randomEmotion = Object.keys(emotions)[Math.floor(Math.random() * 5)];
+            document.getElementById("emotionDisplay").textContent = emotions[randomEmotion];
+            document.getElementById("emotionOptions").innerHTML = Object.keys(emotions)
+                .sort(() => Math.random() - 0.5)
+                .map(e => `<button class='button' onclick='checkEmotion("${e}", "${randomEmotion}")'>${e}</button>`)
+                .join(" ");
+            document.getElementById("emotionSuccess").style.display = "none";
+        }
+
+        function checkEmotion(selected, correct) {
+            document.getElementById("emotionSuccess").style.display = selected === correct ? "block" : "none";
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

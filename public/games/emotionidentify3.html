@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Game - Hard</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; background-color: #1d3557; color: white; }
+        .emoji { font-size: 100px; margin: 20px 0; }
+        .button { padding: 10px 20px; font-size: 18px; margin: 5px; cursor: pointer; }
+        .success { display: none; font-size: 20px; color: green; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Identify the Emotion - Hard</h1>
+    <p>Time left: <span id="timer">30</span> seconds | Score: <span id="score">0</span></p>
+    <div class="emoji" id="emotionDisplay">😀</div>
+    <div id="emotionOptions"></div>
+    <div class="success" id="emotionSuccess">✅ Correct!</div>
+    <script>
+        const emotions = { "Happy": "😀", "Sad": "😢", "Angry": "😡", "Surprised": "😲", "Neutral": "😐" };
+        let score = 0, timeLeft = 30;
+        function startGame() {
+            let randomEmotion = Object.keys(emotions)[Math.floor(Math.random() * 5)];
+            document.getElementById("emotionDisplay").textContent = emotions[randomEmotion];
+            document.getElementById("emotionOptions").innerHTML = Object.keys(emotions)
+                .map(e => `<button class='button' onclick='checkEmotion("${e}", "${randomEmotion}")'>${e}</button>`)
+                .join(" ");
+            document.getElementById("emotionSuccess").style.display = "none";
+        }
+        function checkEmotion(selected, correct) {
+            if (selected === correct) {
+                document.getElementById("emotionSuccess").style.display = "block";
+                score += 10;
+                document.getElementById("score").innerText = score;
+            }
+        }
+        function startTimer() {
+            let timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById("timer").innerText = timeLeft;
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    alert('Game Over! Your score: ' + score);
+                    location.reload();
+                }
+            }, 1000);
+        }
+        startGame();
+        startTimer();
+    </script>
+</body>
+</html>

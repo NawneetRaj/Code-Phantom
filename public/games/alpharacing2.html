@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabet Matching - Easy</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; background-color: #f8f8f8; }
+        .game-container { display: flex; justify-content: center; gap: 40px; margin-top: 20px; }
+        .column { display: flex; flex-direction: column; gap: 10px; }
+        .letter { padding: 15px; background: lightblue; cursor: pointer; border-radius: 5px; font-size: 1.5rem; }
+        .matched { background: lightgreen !important; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <h1>Alphabet Matching - Easy</h1>
+    <div class="game-container">
+        <div class="column" id="uppercase"></div>
+        <div class="column" id="lowercase"></div>
+    </div>
+    <script>
+        const letters = ['A', 'B', 'C'];
+        let selected = [];
+
+        function createLetters() {
+            let upperContainer = document.getElementById('uppercase');
+            let lowerContainer = document.getElementById('lowercase');
+            upperContainer.innerHTML = '';
+            lowerContainer.innerHTML = '';
+
+            letters.forEach(letter => {
+                let div = document.createElement('div');
+                div.classList.add('letter');
+                div.innerText = letter;
+                div.dataset.pair = letter.toLowerCase();
+                div.onclick = selectLetter;
+                upperContainer.appendChild(div);
+            });
+
+            letters.map(l => l.toLowerCase()).forEach(letter => {
+                let div = document.createElement('div');
+                div.classList.add('letter');
+                div.innerText = letter;
+                div.dataset.pair = letter;
+                div.onclick = selectLetter;
+                lowerContainer.appendChild(div);
+            });
+        }
+
+        function selectLetter() {
+            if (selected.length < 2) {
+                selected.push(this);
+                this.style.background = 'yellow';
+            }
+            if (selected.length === 2) {
+                setTimeout(checkMatch, 500);
+            }
+        }
+
+        function checkMatch() {
+            if (selected[0].dataset.pair === selected[1].dataset.pair) {
+                selected.forEach(el => el.classList.add('matched'));
+            } else {
+                selected.forEach(el => el.style.background = 'lightblue');
+            }
+            selected = [];
+        }
+
+        createLetters();
+    </script>
+</body>
+</html>
